@@ -92,9 +92,9 @@ async def start_bot():
   
 # Assuming you have a list of photo URLs or file paths
 photo_collection = [
-    "https://example.com/photo1.jpg",
-    "https://example.com/photo2.jpg",
-    "https://example.com/photo3.jpg",
+    "https://telegra.ph/file/ab47c2266bb9fbdc82468.jpg",
+    "https://telegra.ph/file/f58c18c34dfde407c1fbd.jpg",
+    "https://telegra.ph/file/1a11733bb418369bc11a1.jpg",
     # Add more photo URLs or file paths as needed
 ]
 
