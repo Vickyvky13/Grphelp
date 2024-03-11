@@ -31,8 +31,8 @@ from wbb import app
 from wbb.core.decorators.errors import capture_err
 from wbb.utils.dbfunctions import get_couple, save_couple
 
-__MODULE__ = "Shippering"
-__HELP__ = "/detect_gay - To Choose Couple Of The Day"
+__MODULE__ = "Couple"
+__HELP__ = "/couple - To Choose Couple Of The Day"
 
 
 # Date and time
@@ -67,7 +67,7 @@ def tomorrow():
     return str(dt_tom())
 
 
-@app.on_message(filters.command("detect_gay"))
+@app.on_message(filters.command("couple"))
 @capture_err
 async def couple(_, message):
     if message.chat.type == enums.ChatType.PRIVATE:
