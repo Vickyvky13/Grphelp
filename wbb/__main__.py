@@ -220,7 +220,7 @@ async def start(_, message):
         if name == "mkdwn_help": 
             await message.reply( 
                 MARKDOWN, 
-                parse_mode=ParseMode.HTML, 
+                parse_mode=ParseMode.DEFAULT, 
                 disable_web_page_preview=True, 
             ) 
         elif "_" in name: 
