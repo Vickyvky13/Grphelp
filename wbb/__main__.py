@@ -175,9 +175,9 @@ FED_MARKUP = InlineKeyboardMarkup(
 async def random_photo(_, message): 
     # Replace this with your actual collection of photo URLs or file paths 
     photo_collection = [ 
-        "https://example.com/photo1.jpg", 
-        "https://example.com/photo2.jpg", 
-        "https://example.com/photo3.jpg", 
+        "https://telegra.ph/file/64dbed83bfb0c78e66f6a.jpg", 
+        "https://telegra.ph/file/1a11733bb418369bc11a1.jpg", 
+        "https://telegra.ph/file/ab47c2266bb9fbdc82468.jpg", 
         # Add more photo URLs or file paths as needed 
     ] 
     random_photo_url = random.choice(photo_collection) 
