@@ -1,6 +1,7 @@
 import asyncio 
 import importlib 
 import re 
+import random
 from contextlib import closing, suppress 
   
 from pyrogram import filters, idle 
@@ -89,6 +90,17 @@ async def start_bot():
         task.cancel() 
     log.info("Dead!") 
   
+# Assuming you have a list of photo URLs or file paths
+photo_collection = [
+    "https://example.com/photo1.jpg",
+    "https://example.com/photo2.jpg",
+    "https://example.com/photo3.jpg",
+    # Add more photo URLs or file paths as needed
+]
+
+# Select a random photo URL or file path
+random_photo_url = random.choice(photo_collection)
+
 home_keyboard_pm = InlineKeyboardMarkup( 
     [ 
         [ 
@@ -123,10 +135,12 @@ home_keyboard_pm = InlineKeyboardMarkup(
     ] 
 ) 
   
-home_text_pm = ( 
+# Include the random photo URL in the home text
+home_text_pm = (
     f"Hey there! My name is {BOT_NAME}. I can manage your " 
     + "group with lots of useful features, feel free to " 
-    + "add me to your group." 
+    + "add me to your group. Here's a random photo for you:\n"
+    + random_photo_url
 ) 
   
 keyboard = InlineKeyboardMarkup( 
@@ -170,19 +184,7 @@ FED_MARKUP = InlineKeyboardMarkup(
     ] 
 ) 
   
-# Command handler for the random photo option 
-@app.on_message(filters.command("random_photo")) 
-async def random_photo(_, message): 
-    # Replace this with your actual collection of photo URLs or file paths 
-    photo_collection = [ 
-        "https://telegra.ph/file/64dbed83bfb0c78e66f6a.jpg", 
-        "https://telegra.ph/file/1a11733bb418369bc11a1.jpg", 
-        "https://telegra.ph/file/ab47c2266bb9fbdc82468.jpg", 
-        # Add more photo URLs or file paths as needed 
-    ] 
-    random_photo_url = random.choice(photo_collection) 
-    await app.send_photo(message.chat.id, photo=random_photo_url) 
-  
+# Command handler for /start
 @app.on_message(filters.command("start")) 
 async def start(_, message): 
     if message.chat.type != ChatType.PRIVATE: 
@@ -253,6 +255,7 @@ async def start(_, message):
         ) 
     return 
   
+# Command handler for /help
 @app.on_message(filters.command("help")) 
 async def help_command(_, message): 
     if message.chat.type != ChatType.PRIVATE: 
@@ -308,6 +311,7 @@ async def help_command(_, message):
             ) 
     return 
   
+# Helper function to generate help message
 async def help_parser(name, keyboard=None): 
     if not keyboard: 
         keyboard = InlineKeyboardMarkup(paginate_modules(0, HELPABLE, "help")) 
@@ -323,6 +327,7 @@ Also you can ask anything in Support Group.
         keyboard, 
     ) 
   
+# Command handler for bot commands callback
 @app.on_callback_query(filters.regex("bot_commands")) 
 async def commands_callbacc(_, CallbackQuery): 
     text, keyboard = await help_parser(CallbackQuery.from_user.mention) 
@@ -334,11 +339,13 @@ async def commands_callbacc(_, CallbackQuery):
   
     await CallbackQuery.message.delete() 
   
+# Command handler for system stats callback
 @app.on_callback_query(filters.regex("stats_callback")) 
 async def stats_callbacc(_, CallbackQuery): 
     text = await bot_sys_stats() 
     await app.answer_callback_query(CallbackQuery.id, text, show_alert=True) 
   
+# Command handler for help button callback
 @app.on_callback_query(filters.regex(r"help_(.*?)")) 
 async def help_button(client, query): 
     home_match = re.match(r"help_home\((.+?)\)", query.data) 
