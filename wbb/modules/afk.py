@@ -341,12 +341,12 @@ async def afk_watcher_func(self: Client, message: Message):
                     reasonafk = reasondb["reason"]
                     seenago = get_readable_time((int(time.time() - timeafk)))
                     if afktype == "text":
-                        text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                        text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                         msg += text.format(
                             usr=replied_first_name, id=replied_user_id, tm=seenago
                         )
                     if afktype == "text_reason":
-                        text = "**{usr}** [<code>{id}</code>] is AFK 💔\n**Time Since:** {tm} ago.\n\n**Reason:** {reas}\n\n"
+                        text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                         msg += text.format(
                             usr=replied_first_name,
                             id=replied_user_id,
@@ -355,7 +355,7 @@ async def afk_watcher_func(self: Client, message: Message):
                         )
                     if afktype == "animation":
                         if str(reasonafk) == "None":
-                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n**Time Since:** {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             send = await message.reply_animation(
                                 data,
                                 caption=text.format(
@@ -365,7 +365,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                 ),
                             )
                         else:
-                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n**Time Since:** {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             send = await message.reply_animation(
                                 data,
                                 caption=text.format(
@@ -377,7 +377,7 @@ async def afk_watcher_func(self: Client, message: Message):
                             )
                     if afktype == "photo":
                         if str(reasonafk) == "None":
-                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n**Time Since:** {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             send = await message.reply_photo(
                                 photo=f"downloads/{replied_user_id}.jpg",
                                 caption=text.format(
@@ -387,7 +387,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                 ),
                             )
                         else:
-                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n**Time Since:** {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             send = await message.reply_photo(
                                 photo=f"downloads/{replied_user_id}.jpg",
                                 caption=text.format(
@@ -431,12 +431,12 @@ async def afk_watcher_func(self: Client, message: Message):
                         reasonafk = reasondb["reason"]
                         seenago = get_readable_time((int(time.time() - timeafk)))
                         if afktype == "text":
-                            text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             msg += text.format(
                                 usr=user.first_name[:25], id=user.id, tm=seenago
                             )
                         if afktype == "text_reason":
-                            text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             msg += text.format(
                                 usr=user.first_name[:25],
                                 id=user.id,
@@ -445,7 +445,7 @@ async def afk_watcher_func(self: Client, message: Message):
                             )
                         if afktype == "animation":
                             if str(reasonafk) == "None":
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_animation(
                                     data,
                                     caption=text.format(
@@ -453,7 +453,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                     ),
                                 )
                             else:
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_animation(
                                     data,
                                     caption=text.format(
@@ -465,7 +465,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                 )
                         if afktype == "photo":
                             if str(reasonafk) == "None":
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_photo(
                                     photo=f"downloads/{user.id}.jpg",
                                     caption=text.format(
@@ -473,7 +473,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                     ),
                                 )
                             else:
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_photo(
                                     photo=f"downloads/{user.id}.jpg",
                                     caption=text.format(
@@ -507,12 +507,12 @@ async def afk_watcher_func(self: Client, message: Message):
                         reasonafk = reasondb["reason"]
                         seenago = get_readable_time((int(time.time() - timeafk)))
                         if afktype == "text":
-                            text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             msg += text.format(
                                 usr=first_name[:25], id=user_id, tm=seenago
                             )
                         if afktype == "text_reason":
-                            text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                            text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                             msg += text.format(
                                 usr=first_name[:25],
                                 id=user_id,
@@ -521,7 +521,7 @@ async def afk_watcher_func(self: Client, message: Message):
                             )
                         if afktype == "animation":
                             if str(reasonafk) == "None":
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_animation(
                                     data,
                                     caption=text.format(
@@ -529,7 +529,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                     ),
                                 )
                             else:
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_animation(
                                     data,
                                     caption=text.format(
@@ -541,7 +541,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                 )
                         if afktype == "photo":
                             if str(reasonafk) == "None":
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\\n"
                                 send = await message.reply_photo(
                                     photo=f"downloads/{user_id}.jpg",
                                     caption=text.format(
@@ -549,7 +549,7 @@ async def afk_watcher_func(self: Client, message: Message):
                                     ),
                                 )
                             else:
-                                text = "**{usr}** [<code>{id}</code>] is AFK since {tm} ago.\n\n**Reason:** {reas}\n\n"
+                                text = "**{usr}** [<code>{id}</code>] is AFK 💔\n\n**Last Seen:** {tm} ago.\n**Reason:** ||{reas}||\n\n"
                                 send = await message.reply_photo(
                                     photo=f"downloads/{user_id}.jpg",
                                     caption=text.format(
