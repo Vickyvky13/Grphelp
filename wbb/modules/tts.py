@@ -37,7 +37,7 @@ async def text_to_speech(_, message: Message):
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
-        caption = f"User ID : {sender_mention}\n\nYour Text : [Click]({message.reply_to_message.link})\n\nCMD Sender : [Click]({message.link}\n\n{message.reply_to_message.from_user.mention})"
+        caption = f"Message From : {sender_mention}\n\nYour Text : [Click]({message.reply_to_message.link})\n\nCMD Sender : [Click]({message.link})"
         await message.reply_audio(audio, caption=caption)
         await m.delete()
         audio.close()
