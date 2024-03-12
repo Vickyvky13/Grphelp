@@ -32,7 +32,7 @@ async def text_to_speech(_, message: Message):
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
-        caption = f"Text to Speech\n\nOriginal message by {sender_mention}"
+        caption = f"Original message by {sender_mention}"
         await message.reply_audio(audio, caption=caption)
         await m.delete()
         audio.close()
