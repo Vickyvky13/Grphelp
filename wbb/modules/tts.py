@@ -28,12 +28,11 @@ async def text_to_speech(_, message: Message):
         return await message.reply_text("Reply to some text ffs.")
     m = await message.reply_text("Processing")
     text = message.reply_to_message.text
-    sender_id = message.from_user.id
-    sender_mention = f"[User](tg://user?id={sender_id})"
+    sender_mention = message.reply_to_message.from_user.mention
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
-        caption = f"Text to Speech\n\nRequested by {sender_mention}"
+        caption = f"Text to Speech\n\nOriginal message by {sender_mention}"
         await message.reply_audio(audio, caption=caption)
         await m.delete()
         audio.close()
