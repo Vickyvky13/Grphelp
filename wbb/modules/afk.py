@@ -61,7 +61,7 @@ async def active_afk(_, message: Message):
             reasonafk = reasondb["reason"]
             seenago = get_readable_time((int(time.time() - timeafk)))
             if afktype == "animation":
-                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨n\n"
+                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨\n\n"
                 send = (
                     await message.reply_animation(
                         data,
