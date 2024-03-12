@@ -10,11 +10,11 @@ from pyrogram.types import Message
 from wbb import app 
 
 
-def convert(text): 
+def convert(text, speed=1.0): 
     audio = BytesIO() 
     i = Translator().translate(text, dest="en") 
     lang = i.src 
-    tts = gTTS(text, lang=lang) 
+    tts = gTTS(text, lang=lang, speed=speed) 
     audio.name = lang + ".mp3" 
     tts.write_to_fp(audio) 
     return audio 
@@ -26,12 +26,16 @@ async def text_to_speech(_, message: Message):
         return await message.reply_text("Reply to some text ffs.") 
     if not message.reply_to_message.text: 
         return await message.reply_text("Reply to some text ffs.") 
+    args = message.text.split()[1:]
+    speed = 1.0
+    if args and args[0].replace('.', '', 1).isdigit():
+        speed = float(args[0])
     m = await message.reply_text("Processing") 
     text = message.reply_to_message.text 
     sender_mention = message.reply_to_message.from_user.mention 
     try: 
         loop = get_running_loop() 
-        audio = await loop.run_in_executor(None, convert, text) 
+        audio = await loop.run_in_executor(None, convert, text, speed) 
         caption = f"Original message by {sender_mention}: [Link to Message]({message.link})"
         await message.reply_audio(audio, caption=caption) 
         await m.delete() 
