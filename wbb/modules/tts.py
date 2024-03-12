@@ -29,12 +29,12 @@ async def text_to_speech(_, message: Message):
     m = await message.reply_text("Processing")
     text = message.reply_to_message.text
     sender_id = message.from_user.id
-    sender_mention = f"<a href='tg://user?id={sender_id}'>User</a>"
+    sender_mention = f"[User](tg://user?id={sender_id})"
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
         caption = f"Text to Speech\n\nRequested by {sender_mention}"
-        await message.reply_audio(audio, caption=caption, parse_mode="HTML")
+        await message.reply_audio(audio, caption=caption, parse_mode="markdown")
         await m.delete()
         audio.close()
     except Exception as e:
