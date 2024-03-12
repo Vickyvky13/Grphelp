@@ -61,7 +61,7 @@ async def active_afk(_, message: Message):
             reasonafk = reasondb["reason"]
             seenago = get_readable_time((int(time.time() - timeafk)))
             if afktype == "animation":
-                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n"
+                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨n\n"
                 send = (
                     await message.reply_animation(
                         data,
@@ -76,7 +76,7 @@ async def active_afk(_, message: Message):
                         ),
                     )
             elif afktype == "photo":
-                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n"
+                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨\n\n"
                 send = (
                     await message.reply_photo(
                         photo=f"downloads/{user_id}.jpg",
@@ -91,7 +91,7 @@ async def active_afk(_, message: Message):
                         ),
                     )
             elif afktype == "text":
-                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n"
+                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨\n\n"
                 send = await message.reply_text(
                     text.format(
                         usr=message.from_user.mention, id=message.from_user.id, tm=seenago
@@ -99,7 +99,7 @@ async def active_afk(_, message: Message):
                     disable_web_page_preview=True,
                 )
             elif afktype == "text_reason":
-                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n**Reason:** `{reas}`\n\n"
+                text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨\n\n**Reason:** `{reas}`\n\n"
                 send = await message.reply_text(
                     text.format(
                         usr=message.from_user.mention,
@@ -299,7 +299,7 @@ async def afk_watcher_func(self: Client, message: Message):
                         ),
                     )
                 else:
-                    text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n**Reason:** `{reas}`\n\n"
+                    text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago.\n\n**Reason:** `{reas}`\n\n"
                     send = await message.reply_animation(
                         data,
                         caption=text.format(
@@ -316,7 +316,7 @@ async def afk_watcher_func(self: Client, message: Message):
                         ),
                     )
                 else:
-                    text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm}\n\n**Reason:** `{reas}`\n\n"
+                    text = "**{usr}** [<code>{id}</code>] is back online and was away for {tm} ago ✨\n\n**Reason:** `{reas}`\n\n"
                     send = await message.reply_photo(
                         photo=f"downloads/{userid}.jpg",
                         caption=text.format(
