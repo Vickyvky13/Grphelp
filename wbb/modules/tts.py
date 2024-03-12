@@ -29,19 +29,25 @@ async def text_to_speech(_, message: Message):
     m = await message.reply_text("Processing")
     text = message.reply_to_message.text
     sender_mention = message.reply_to_message.from_user.mention
-    sender_first_name = message.reply_to_message.from_user.first_name
+
     # Check if the command includes a mention
+    mentioned_user = None
     if len(message.command) > 1:
-        # Extract the mentioned user's name and append it to the text
         mentioned_user = message.command[1]
+
+    # Append mentioned user's mention to the text
+    if mentioned_user:
         text += f" {mentioned_user}"
+
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
-        caption = (
-            f"Original message by {sender_first_name} ({sender_mention}): [Link to Message]({message.link})\n\n"
-            f"Original message: {message.reply_to_message.text}"
-        )
+
+        # Construct caption with mention if mentioned_user exists
+        caption = f"Original message by {sender_mention}: [Link to Message]({message.link})"
+        if mentioned_user:
+            caption += f" [Reply to: {mentioned_user}](tg://user?id={message.reply_to_message.from_user.id})"
+
         await message.reply_audio(audio, caption=caption)
         await m.delete()
         audio.close()
