@@ -64,7 +64,7 @@ async def music(_, message):
         return await message.reply_text( 
             "Another download is in progress, try again after sometime." 
         ) 
-    is_downloading = True 
+    is_downloading = False
     
     # Get the name of the user who requested the music
     user_name = message.from_user.first_name if message.from_user else "Unknown User"
