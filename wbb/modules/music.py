@@ -71,7 +71,7 @@ async def music(_, message):
     
     # Send a message indicating the start of the download process with the user's name
     m = await message.reply_text( 
-        f"{user_name.capitalize()} is downloading {url}", disable_web_page_preview=True 
+        f"{sender_mention} is downloading {url}", disable_web_page_preview=True 
     ) 
     try: 
         loop = get_running_loop() 
@@ -100,7 +100,7 @@ async def music(_, message):
         performer=performer, 
         title=title, 
         thumb=thumbnail_file, 
-        caption=f"{user_name.capitalize()}, here is your requested music."  # Mention the user with capitalized name
+        caption=f"{sender_mention}, here is your requested music."  # Mention the user with capitalized name
     ) 
     await m.delete() 
     os.remove(audio_file) 
