@@ -71,7 +71,7 @@ async def music(_, message):
     
     # Send a message indicating the start of the download process with the user's name
     m = await message.reply_text( 
-        f"{user_name} is downloading {url}", disable_web_page_preview=True 
+        f"{user_name.capitalize()} is downloading {url}", disable_web_page_preview=True 
     ) 
     try: 
         loop = get_running_loop() 
@@ -92,12 +92,15 @@ async def music(_, message):
     except Exception as e: 
         is_downloading = False 
         return await m.edit(str(e)) 
+    
+    # Mention the user who requested the music and send the audio file
     await message.reply_audio( 
         audio_file, 
         duration=duration, 
         performer=performer, 
         title=title, 
         thumb=thumbnail_file, 
+        caption=f"{user_name.capitalize()}, here is your requested music."  # Mention the user with capitalized name
     ) 
     await m.delete() 
     os.remove(audio_file) 
@@ -112,6 +115,7 @@ async def download_song(url):
     song = BytesIO(song) 
     song.name = "a.mp3" 
     return song
+
 
 
 # Jiosaavn Music
