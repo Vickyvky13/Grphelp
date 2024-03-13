@@ -52,7 +52,7 @@ def download_youtube_audio(arq_resp):
     return [title, performer, duration, audio_file, thumbnail_file] 
   
   
-@app.on_message(filters.command("ytmusic", "song")) 
+@app.on_message(filters.command("ytmusic")) 
 @capture_err 
 async def music(_, message): 
     global is_downloading 
@@ -115,6 +115,7 @@ async def download_song(url):
     song = BytesIO(song) 
     song.name = "a.mp3" 
     return song
+
 
 
 
