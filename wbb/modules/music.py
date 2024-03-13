@@ -100,7 +100,7 @@ async def music(_, message):
         performer=performer, 
         title=title, 
         thumb=thumbnail_file, 
-        caption=f"{user_name.capitalize()}, here is your requested music."  # Mention the user with capitalized name
+        caption=f"{user_name.capitalize()}, [{message.from_user.first_name}](tg://user?id={message.from_user.id}) here is your requested music."  # Mention the user with capitalized name
     ) 
     await m.delete() 
     os.remove(audio_file) 
