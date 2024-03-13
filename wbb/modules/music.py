@@ -102,6 +102,10 @@ async def music(_, message):
         thumb=thumbnail_file, 
         caption=f"{user_name.capitalize()}, here is your requested music."  # Mention the user with capitalized name
     ) 
+    
+    # Delete the command message
+    await message.delete() 
+    
     await m.delete() 
     os.remove(audio_file) 
     os.remove(thumbnail_file) 
