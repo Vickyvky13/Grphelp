@@ -7,7 +7,7 @@ load_dotenv(
 )
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-API_ID = int(os.environ.get("API_ID"))
+API_ID = int(os.environ.get("API_ID", "13569561"))
 SESSION_STRING = os.environ.get("SESSION_STRING", "")
 API_HASH = os.environ.get("API_HASH")
 USERBOT_PREFIX = os.environ.get("USERBOT_PREFIX", ".")
