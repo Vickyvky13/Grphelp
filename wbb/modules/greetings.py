@@ -409,35 +409,24 @@ async def _ban_restricted_user_until_date(
     except UserNotParticipant:
         pass
 
+@app.on_message(filters.command("captcha") & ~filters.private)
+@adminsOnly("can_restrict_members")
+async def captcha_state(_, message):
+    usage = "**Usage:**\n/captcha [ENABLE|DISABLE]"
+    if len(message.command) != 2:
+        return await message.reply_text(usage)
 
-@app.on_message(filters.command("captcha") & ~filters.private) 
-@adminsOnly("can_restrict_members") 
-async def captcha_state(_, message): 
-    usage = "**Usage:**\n/captcha [ENABLE|DISABLE]" 
-    
-    if len(message.command) != 2: 
-        return await message.reply_text(usage) 
-    
-    chat_id = message.chat.id 
-    state = message.text.split(None, 1)[1].strip().lower() 
-    
-    if state == "enable": 
-        await captcha_on(chat_id) 
-        await message.reply_text("Enabled Captcha For New Users.") 
-    elif state == "disable": 
-        await captcha_off(chat_id) 
-        await message.reply_text("Disabled Captcha For New Users.") 
-    else: 
+    chat_id = message.chat.id
+    state = message.text.split(None, 1)[1].strip()
+    state = state.lower()
+    if state == "enable":
+        await captcha_on(chat_id)
+        await message.reply_text("Enabled Captcha For New Users.")
+    elif state == "disable":
+        await captcha_off(chat_id)
+        await message.reply_text("Disabled Captcha For New Users.")
+    else:
         await message.reply_text(usage)
-
-# Set captcha default state to "enable"
-async def captcha_on(chat_id):
-    # Implement captcha enabling logic here
-    pass
-
-# Implement captcha disabling logic here
-async def captcha_off(chat_id):
-    pass
 
 
 
