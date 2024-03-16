@@ -73,7 +73,7 @@ from wbb.utils.functions import (
 
 __MODULE__ = "Greetings"
 __HELP__ = """
-/captcha [ENABLE|DISABLE] - Enable/Disable captcha.
+/captcha [ENABLE|DISABLE] - Enable/Disable captcha **(Give Ban and Delete Permission give the bot)**.
 
 /set_welcome - Reply this to a message containing correct
 format for a welcome message, check end of this message.
