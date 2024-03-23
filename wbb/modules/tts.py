@@ -20,7 +20,7 @@ def convert(text):
     return audio
 
 
-@app.on_message(filters.command("tts"))
+@app.on_message(filters.command("tts", "ttf"))
 async def text_to_speech(_, message: Message):
     if not message.reply_to_message:
         return await message.reply_text("Reply to some text ffs.")
@@ -37,7 +37,7 @@ async def text_to_speech(_, message: Message):
     try:
         loop = get_running_loop()
         audio = await loop.run_in_executor(None, convert, text)
-        caption = f"Message From : {sender_mention}\n\nYour Text : [Click]({message.reply_to_message.link})\n\nCMD Sender : [Click]({message.link})"
+        caption = f"Message From : {sender_mention}\n\nYour Text : [Click]({message.reply_to_message.link})"
         await message.reply_audio(audio, caption=caption)
         await m.delete()
         audio.close()
