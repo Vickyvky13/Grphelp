@@ -23,35 +23,33 @@ __HELP__ = """
 is_downloading = False  
   
   
-def download_youtube_media(arq_resp):
-    r = arq_resp.result[0]
-
-    title = r.title
-    performer = r.channel
-
-    m, s = r.duration.split(":")
-    duration = int(datetime.timedelta(minutes=int(m), seconds=int(s)).total_seconds())
-
-    if duration > 1800:
-        return
-
-    thumb = get(r.thumbnails[0]).content
-    with open("thumbnail.png", "wb") as f:
-        f.write(thumb)
-    thumbnail_file = "thumbnail.png"
-
-    url = f"https://youtube.com{r.url_suffix}"
-    yt = YouTube(url)
-    
-    # Downloading video
-    video_stream = yt.streams.filter(file_extension='mp4', progressive=True).first()
-    video_file = video_stream.download()
-
-    # Downloading audio
-    audio_stream = yt.streams.filter(only_audio=True).first()
-    audio_file = audio_stream.download()
-
-    return [title, performer, duration, audio_file, video_file, thumbnail_file]
+def download_youtube_audio(arq_resp):  
+    r = arq_resp.result[0]  
+  
+    title = r.title  
+    performer = r.channel  
+  
+    m, s = r.duration.split(":")  
+    duration = int(datetime.timedelta(minutes=int(m), seconds=int(s)).total_seconds())  
+  
+    if duration > 1800:  
+        return  
+  
+    thumb = get(r.thumbnails[0]).content  
+    with open("thumbnail.png", "wb") as f:  
+        f.write(thumb)  
+    thumbnail_file = "thumbnail.png"  
+  
+    url = f"https://youtube.com{r.url_suffix}"  
+    yt = YouTube(url)  
+    audio = yt.streams.filter(only_audio=True).get_audio_only()  
+  
+    out_file = audio.download()  
+    base, _ = os.path.splitext(out_file)  
+    audio_file = base + ".mp3"  
+    os.rename(out_file, audio_file)  
+  
+    return [title, performer, duration, audio_file, thumbnail_file]  
   
   
 @app.on_message(filters.command(["ytmusic", "song"]))  
@@ -66,7 +64,7 @@ async def music(_, message):
         return await message.reply_text(  
             "Another download is in progress, try again after sometime."  
         )  
-    is_downloading = False 
+    is_downloading = False  
   
     # Get the name of the user who requested the music 
     user_name = message.from_user.first_name if message.from_user else "Unknown User" 
@@ -79,7 +77,7 @@ async def music(_, message):
         loop = get_running_loop()  
         arq_resp = await arq.youtube(url)  
         music = await loop.run_in_executor(  
-            None, partial(download_youtube_media, arq_resp)  
+            None, partial(download_youtube_audio, arq_resp)  
         )  
   
         if not music:  
@@ -89,7 +87,6 @@ async def music(_, message):
             performer,  
             duration,  
             audio_file,  
-            video_file,  
             thumbnail_file,  
         ) = music  
     except Exception as e:  
@@ -97,19 +94,13 @@ async def music(_, message):
         return await m.edit(str(e))  
   
     # Mention the user who requested the music and send the audio file 
-    await message.reply_video(  
-        video_file,  
-        duration=duration,  
-        caption=f"{user_name.capitalize()}, here is your requested music video."  
-    )  
-  
     await message.reply_audio(  
         audio_file,  
         duration=duration,  
         performer=performer,  
         title=title,  
         thumb=thumbnail_file,  
-        caption=f"{user_name.capitalize()}, here is your requested music audio."  # Mention the user with capitalized name 
+        caption=f"{user_name.capitalize()}, here is your requested music."  # Mention the user with capitalized name 
     )  
   
     # Delete the command message 
@@ -117,7 +108,6 @@ async def music(_, message):
   
     await m.delete()  
     os.remove(audio_file)  
-    os.remove(video_file)  
     os.remove(thumbnail_file)  
     is_downloading = False  
   
@@ -133,10 +123,7 @@ async def download_song(url):
   
   
   
-  
-  
 # Jiosaavn Music 
-  
   
 @app.on_message(filters.command("saavn")) 
 @capture_err 
@@ -146,4 +133,59 @@ async def jssong(_, message):
         return await message.reply_text("/saavn requires an argument.") 
     if is_downloading: 
         return await message.reply_text( 
-            "Another download
+            "Another download is in progress, try again after sometime." 
+        ) 
+    is_downloading = True 
+    text = message.text.split(None, 1)[1] 
+    m = await message.reply_text("Searching...") 
+    try: 
+        songs = await arq.saavn(text) 
+        if not songs.ok: 
+            await m.edit(songs.result) 
+            is_downloading = False 
+            return 
+        sname = songs.result[0].song 
+        slink = songs.result[0].media_url 
+        ssingers = songs.result[0].singers 
+        sduration = songs.result[0].duration 
+        await m.edit("Downloading") 
+        song = await download_song(slink) 
+        await m.edit("Uploading") 
+        await message.reply_audio( 
+            audio=song, 
+            title=sname, 
+            performer=ssingers, 
+            duration=sduration, 
+        ) 
+        await m.delete() 
+    except Exception as e: 
+        is_downloading = False 
+        return await m.edit(str(e)) 
+    is_downloading = False 
+    song.close() 
+  
+  
+# Lyrics 
+  
+@app.on_message(filters.command("lyrics")) 
+async def lyrics_func(_, message): 
+    if len(message.command) < 2: 
+        return await message.reply_text("**Usage:**\n/lyrics [QUERY]") 
+    m = await message.reply_text("**Searching**") 
+    query = message.text.strip().split(None, 1)[1] 
+  
+    resp = await arq.lyrics(query) 
+  
+    if not (resp.ok and resp.result): 
+        return await m.edit("No lyrics found.") 
+  
+    song = resp.result[0] 
+    song_name = song["song"] 
+    artist = song["artist"] 
+    lyrics = song["lyrics"] 
+    msg = f"**{song_name}** | **{artist}**\n\n__{lyrics}__" 
+  
+    if len(msg) > 4095: 
+        msg = await paste(msg) 
+        msg = f"**LYRICS_TOO_LONG:** [URL]({msg})" 
+    return await m.edit(msg)
